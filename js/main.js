@@ -1,11 +1,7 @@
-
-// var clickTwo = 0;
-
 var catNames = ['Keeta', 'Salem', 'Cato', 'Twix', 'Gordi'];
 var catImages = ["images/keeta.jpg", "http://placekitten.com/g/400/300", "images/cato.jpg", "http://placekitten.com/g/600/300", "http://placekitten.com/g/500/400"];
 var name, titleId;
 
-//give each an idea to later be able to control their clicks
 for (var i = 0; i < catNames.length; i++) {
 	name = catNames[i];
 	titleId = "title" + i;
