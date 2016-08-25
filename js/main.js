@@ -1,4 +1,4 @@
-// var clickOne = 0;
+
 // var clickTwo = 0;
 
 var catNames = ['Keeta', 'Salem', 'Cato', 'Twix', 'Gordi'];
@@ -9,18 +9,20 @@ var name, titleId;
 for (var i = 0; i < catNames.length; i++) {
 	name = catNames[i];
 	titleId = "title" + i;
+	clickId = "click" + i;
 
 	$('ul').append('<li id="'+ name + '">' + name + '</li>');
 	$('.inner-container').append('<h2 id ="' + titleId + '"style="display:none">' + name + '</h2>');
 	$('.inner-container').append('<img class="cat-image" id="' + name + i + '" src="' + catImages[i] + '" style="display:none;" width="350" height="250">');
+	$('.inner-container').append('<p>Clicks: <a id="' + clickId +'"></a></p>');
+	$('#' + clickId).html('0');
 	var id = '' + name + i;
 	var chosenCat = document.getElementById(name);
 
-	chosenCat.addEventListener('click', (function(id, titleId) {
+	chosenCat.addEventListener('click', (function(id, titleId, clickId) {
     return function() {
     	var titles = document.getElementsByTagName('h2');
     	var allCats = document.getElementsByClassName('cat-image');
-    	console.log("titles length = " + titles.length);
 		for (var cat = 0; cat < allCats.length; cat++) {
     		if(allCats[cat].style.display = "block") {
     			allCats[cat].style.display = "none";
@@ -33,17 +35,13 @@ for (var i = 0; i < catNames.length; i++) {
     	}
 		document.getElementById(id).style.display = "block";
         document.getElementById(titleId).style.display = "block";
+        console.log("About to enter the click function");
+
+        var clicks = Number($('#' + clickId).text());
+        $('#' + id).click(function() {
+	    	clicks++;
+	        $('#' + clickId).html(clicks);
+	    });
     };
-})(id, titleId));
+})(id, titleId, clickId));
 }
-
-// $('#your-cat').click(function() {
-//     clickTwo++;
-//     $("#click-two").html(clickTwo);
-// });
-
-// var myCatName = "Keeta";
-// var yourCatName = "Cato";
-
-// $('#cat-one').append(myCatName);
-// $('#cat-two').append(yourCatName);
