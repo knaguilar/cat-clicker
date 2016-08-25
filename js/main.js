@@ -10,28 +10,24 @@ for (var i = 0; i < catNames.length; i++) {
 	$('ul').append('<li id="'+ name + '">' + name + '</li>');
 	$('.inner-container').append('<h2 id ="' + titleId + '"style="display:none">' + name + '</h2>');
 	$('.inner-container').append('<img class="cat-image" id="' + name + i + '" src="' + catImages[i] + '" style="display:none;" width="350" height="250">');
-	$('.inner-container').append('<p>Clicks: <a id="' + clickId +'"></a></p>');
+	$('.inner-container').append('<p id="' + i + '" style="display:none">Clicks: <a id="' + clickId +'"></a></p>');
 	$('#' + clickId).html('0');
 	var id = '' + name + i;
 	var chosenCat = document.getElementById(name);
+	var titles = document.getElementsByTagName('h2');
+    var allCats = document.getElementsByClassName('cat-image');
+    var likes = document.getElementsByTagName('p');
 
-	chosenCat.addEventListener('click', (function(id, titleId, clickId) {
+	chosenCat.addEventListener('click', (function(id, titleId, clickId, i) {
     return function() {
-    	var titles = document.getElementsByTagName('h2');
-    	var allCats = document.getElementsByClassName('cat-image');
-		for (var cat = 0; cat < allCats.length; cat++) {
-    		if(allCats[cat].style.display = "block") {
-    			allCats[cat].style.display = "none";
-    		}
-    	}
-    	for (var head = 0; head < titles.length; head++) {
-    		if(titles[head].style.display = "block") {
-    			titles[head].style.display = "none";
-    		}
-    	}
+		//function that hides all previous content  eg. cat name, image and clicker
+		reset(allCats);
+    	reset(titles);
+    	reset(likes);
+
 		document.getElementById(id).style.display = "block";
         document.getElementById(titleId).style.display = "block";
-        console.log("About to enter the click function");
+        document.getElementById(i).style.display = "block";
 
         var clicks = Number($('#' + clickId).text());
         $('#' + id).click(function() {
@@ -39,5 +35,13 @@ for (var i = 0; i < catNames.length; i++) {
 	        $('#' + clickId).html(clicks);
 	    });
     };
-})(id, titleId, clickId));
+})(id, titleId, clickId, i));
+}
+
+function reset (group) {
+	for (var head = 0; head < group.length; head++) {
+    		if(group[head].style.display = "block") {
+    			group[head].style.display = "none";
+    		}
+    	}
 }
