@@ -8,16 +8,22 @@ var name;
 for (var i = 0; i < catNames.length; i++) {
 	name = catNames[i];
 	$('ul').append('<li id="'+ name + '">' + name + '</li>');
-	$('.inner-container').append('<img id="' + name + i + '" src="images/keeta.jpg" style="visibility:hidden;" width="350" height="250">');
+	$('.inner-container').append('<img id="' + name + i + '" src="images/keeta.jpg" style="display:none;" width="350" height="250">');
 
 	var id = '' + name + (i);
 	$('#' + name).click(function() {
-		document.getElementById(id).style.visibility = "visible";
+		document.getElementById(id).style.display = "block";
 	});
 }
 
 
+//maybe add a switch?
 
+// 	addEventListener('click', (function(numCopy) {
+//     return function() {
+//         alert(numCopy)
+//     };
+// })(num));
 
 // $('#your-cat').click(function() {
 //     clickTwo++;
