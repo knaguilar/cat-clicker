@@ -3,29 +3,38 @@
 
 var catNames = ['Keeta', 'Salem', 'Cato', 'Twix', 'Gordi'];
 var catImages = ["images/keeta.jpg", "http://placekitten.com/g/400/300", "images/cato.jpg", "http://placekitten.com/g/600/300", "http://placekitten.com/g/500/400"];
-var name;
+var name, titleId;
 
 //give each an idea to later be able to control their clicks
 for (var i = 0; i < catNames.length; i++) {
 	name = catNames[i];
-	$('ul').append('<li id="'+ name + '">' + name + '</li>');
-	$('.inner-container').append('<img class="cat-image" id="' + name + i + '" src="' + catImages[i] + '" style="display:none;" width="350" height="250">');
+	titleId = "title" + i;
 
-	var id = '' + name + (i);
+	$('ul').append('<li id="'+ name + '">' + name + '</li>');
+	$('.inner-container').append('<h2 id ="' + titleId + '"style="display:none">' + name + '</h2>');
+	$('.inner-container').append('<img class="cat-image" id="' + name + i + '" src="' + catImages[i] + '" style="display:none;" width="350" height="250">');
+	var id = '' + name + i;
 	var chosenCat = document.getElementById(name);
 
-	chosenCat.addEventListener('click', (function(id) {
+	chosenCat.addEventListener('click', (function(id, titleId) {
     return function() {
-    	var allCats = document.getElementsByTagName('img');
-    	if(allCats) {
-    		for (var cat = 0; cat < allCats.length; cat++) {
-	    		console.log("This means allCats = " + allCats[cat]);
-	    		allCats[cat].style.display = "none";
-	    	}
+    	var titles = document.getElementsByTagName('h2');
+    	var allCats = document.getElementsByClassName('cat-image');
+    	console.log("titles length = " + titles.length);
+		for (var cat = 0; cat < allCats.length; cat++) {
+    		if(allCats[cat].style.display = "block") {
+    			allCats[cat].style.display = "none";
+    		}
     	}
-        document.getElementById(id).style.display = "block";
+    	for (var head = 0; head < titles.length; head++) {
+    		if(titles[head].style.display = "block") {
+    			titles[head].style.display = "none";
+    		}
+    	}
+		document.getElementById(id).style.display = "block";
+        document.getElementById(titleId).style.display = "block";
     };
-})(id));
+})(id, titleId));
 }
 
 // $('#your-cat').click(function() {
