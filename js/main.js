@@ -8,19 +8,16 @@ var name;
 for (var i = 0; i < catNames.length; i++) {
 	name = catNames[i];
 	$('ul').append('<li id="'+ name + '">' + name + '</li>');
+	$('.inner-container').append('<img id="' + name + i + '" src="images/keeta.jpg" style="visibility:hidden;" width="350" height="250">');
+
+	var id = '' + name + (i);
+	$('#' + name).click(function() {
+		document.getElementById(id).style.visibility = "visible";
+	});
 }
 
-	// $('ul').append('<img src="images/keeta.jpg" width="350" height="250">');
 
 
-
-
-
-
-// $('#my-cat').click(function() {
-// 	clickOne++;
-//   	$("#click-one").html(clickOne);
-// });
 
 // $('#your-cat').click(function() {
 //     clickTwo++;
