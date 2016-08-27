@@ -26,9 +26,7 @@
 			octopus.current = "";
 			octopus.currentImg = "";
             listView.init();
-            console.log("this is being called once right?");
             octopus.currentCat();
-            // detailsView.render();
         },
 
         //grabs the cat info from the model array
@@ -36,14 +34,28 @@
 			return model;
 		},
 
-		showDetails: function() {
-			return detailsView.render();
+		getCount: function(i){
+			return model[i].clickCount;
 		},
-		increaseCounter: function(){
-			//tell model to update the click counter for the current cat
-			//tell the view to update the counter displayed
+
+		updateCount: function(count, i){
+			model[i].clickCount = count;
 		},
-		//change cat
+
+		increaseCounter: function(name, count, i){
+			var displayCat = document.getElementById(octopus.current); //cat image id
+			displayCat.addEventListener('click', (function(name, count) {
+				return function() {
+					count++;
+					//tell model to update the click counter for the current cat
+					octopus.updateCount(count, i);
+					//tell the view to update the counter displayed
+					detailsView.renderClicks(name, count);
+
+    			}; //return
+				})(name, count));
+		},
+
 		//set current cat
 		currentCat: function() {
 			for (var i = 0; i < model.length; i++) {
@@ -51,15 +63,17 @@
 				var name = cat.name;
 				var iden = name + i;
 				var pic = cat.imgURL;
-				var click = cat.clickCount;
 				var chosenCat = document.getElementById(name);
 
-				chosenCat.addEventListener('click', (function(id, image, click) {
+				chosenCat.addEventListener('click', (function(name, iden, pic, i) {
 				return function() {
 					//render the image and info
-					detailsView.render(id, image);
+					var count = octopus.getCount(i);
+					detailsView.render(name, iden, pic, count);
+					octopus.increaseCounter(name, count, i);
+
     			}; //return
-				})(iden, pic, click)); //listener
+				})(name, iden, pic, i)); //listener
 			} //for loop
 		} //current cat
 	};
@@ -84,21 +98,26 @@
 	};
 
 	var detailsView = {
-		render: function(id, image) {
+		render: function(name, iden, pic, count) {
 			//check to make sure another cat isn't displaying
 			if(octopus.current !== "" && octopus.currentImg !== ""){
 				detailsView.resetView();
 			}
 
-			$('.inner-container').append('<img class="cat-image" id="' + id + '" src="'
-				+ image + '" style="display:block;" width="350" height="250">');
-			octopus.current = id;
-			octopus.currentImg = image;
+			$('.inner-container').append('<h2>' + name + '</h2><img class="cat-image" id="' + iden + '" src="'
+				+ pic + '" width="350" height="250"><p>Clicks: <a id="click' + name +'">' + count + '</a></p>');
+			octopus.current = iden;
+			octopus.currentImg = pic;
+		},
+		renderClicks: function(name, count) {
+			$('#click' + name).html(count);
 		},
 		resetView: function() {
 			//removing current cat
 			var child = document.getElementById(octopus.current);
 			$(child).remove();
+			$('h2').remove();
+			$('p').remove();
 			octopus.current = "";
 			octopus.currentImg = "";
 		}
