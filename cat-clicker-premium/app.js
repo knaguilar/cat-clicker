@@ -23,7 +23,11 @@
 
 	var octopus = {
 		init: function() {
+			octopus.current = "";
+			octopus.currentImg = "";
             listView.init();
+            console.log("this is being called once right?");
+            octopus.currentCat();
             // detailsView.render();
         },
 
@@ -32,32 +36,47 @@
 			return model;
 		},
 
-		displayList: function(){
-			return listView.render();
-		},
-
-		showDetails: function(){
+		showDetails: function() {
 			return detailsView.render();
 		},
 		increaseCounter: function(){
 			//tell model to update the click counter for the current cat
 			//tell the view to update the counter displayed
-		}
+		},
 		//change cat
 		//set current cat
+		currentCat: function() {
+			for (var i = 0; i < model.length; i++) {
+				var cat = model[i];
+				var name = cat.name;
+				var iden = name + i;
+				var pic = cat.imgURL;
+				var click = cat.clickCount;
+				var chosenCat = document.getElementById(name);
+
+				chosenCat.addEventListener('click', (function(id, image, click) {
+				return function() {
+					//render the image and info
+					detailsView.render(id, image);
+    			}; //return
+				})(iden, pic, click)); //listener
+			} //for loop
+		} //current cat
 	};
 
 	var listView = {
 		//asks the octopus for the cat info
 		init: function(){
 			var catList = octopus.getList();
-			listView.render();
+			listView.render(catList);
 			//list gets populated
 		},
 
-		render: function() {
+		render: function(catList) {
 			for (var cat = 0; cat < catList.length; cat++) {
-				$('ul').append('<li><button id="cat'+ cat + '">' + catList[cat].name + '</button></li>');
+				var catName = catList[cat].name;
+				$('ul').append('<li><button id="'+ catName + '">'
+					+ catName + '</button></li>');
 			}
 			//list shows up on screen
 		}
@@ -65,8 +84,23 @@
 	};
 
 	var detailsView = {
-		render: function() {
+		render: function(id, image) {
+			//check to make sure another cat isn't displaying
+			if(octopus.current !== "" && octopus.currentImg !== ""){
+				detailsView.resetView();
+			}
 
+			$('.inner-container').append('<img class="cat-image" id="' + id + '" src="'
+				+ image + '" style="display:block;" width="350" height="250">');
+			octopus.current = id;
+			octopus.currentImg = image;
+		},
+		resetView: function() {
+			//removing current cat
+			var child = document.getElementById(octopus.current);
+			$(child).remove();
+			octopus.current = "";
+			octopus.currentImg = "";
 		}
 
 	};
